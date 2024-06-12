@@ -43,6 +43,12 @@ func getConfig(root string, opts config.IndexOpts) *packages.Config {
 }
 
 func addImportsToPkgs(pkgLookup PackageLookup, opts *config.IndexOpts, pkg *packages.Package) {
+	defer func() {
+		if e := recover(); e != nil {
+			fmt.Printf("recover: processing import of %s\n", pkg.PkgPath)
+			panic(e)
+		}
+	}()
 	if _, ok := pkgLookup[newtypes.GetID(pkg)]; ok {
 		return
 	}
