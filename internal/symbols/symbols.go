@@ -10,7 +10,15 @@ import (
 
 func FromDescriptors(pkg *packages.Package, descriptors ...*scip.Descriptor) string {
 	if pkg.Module == nil {
-		panic(fmt.Sprintf("Failed to find package for: %+v\n", pkg.PkgPath))
+		return scip.VerboseSymbolFormatter.FormatSymbol(&scip.Symbol{
+			Scheme: "scip-go",
+			Package: &scip.Package{
+				Manager: "gomod",
+				Name:    "unk",
+				Version: "unk",
+			},
+			Descriptors: descriptors,
+		})
 	}
 
 	return scip.VerboseSymbolFormatter.FormatSymbol(&scip.Symbol{
